@@ -28,32 +28,42 @@ public class MainActivity extends AppCompatActivity {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
 
-            fiv_t = findViewById(R.id.editTextNumber);
-            tow_t = findViewById(R.id.editTextNumber2);
-            one_t = findViewById(R.id.editTextNumber3);
-            fiv_h_t = findViewById(R.id.editTextNumber4);
-            pasnger = findViewById(R.id.editTextNumber5);
 
-            Button ccl = findViewById(R.id.cala_bt);
-            ccl.setOnClickListener(v1 -> Calaut());
-
+            ins();
 
             return insets;
         });
     }
 
+    private  void ins()
+    {
+        fiv_t = findViewById(R.id.editTextNumber);
+        tow_t = findViewById(R.id.editTextNumber2);
+        one_t = findViewById(R.id.editTextNumber3);
+        fiv_h_t = findViewById(R.id.editTextNumber4);
+        pasnger = findViewById(R.id.editTextNumber5);
+
+        Button ccl = findViewById(R.id.cala_bt);
+        ccl.setOnClickListener(v1 -> Calaut());
+    }
+    private  void rest_value()
+    {
+        five = tow = one = fiveh = 0;
+        pasnger_nu = 0;
+    }
+    @SuppressLint("SetTextI18n")
     private  void Calaut()
     {
+        rest_value();
         if (!fiv_t.getText().toString().matches(""))
         {
             five = Integer.parseInt(fiv_t.getText().toString());
-
         }
         if (isNotEmpty(tow_t))
         {
             tow = Integer.parseInt(tow_t.getText().toString());
         }
-        if (isNotEmpty(one_t))
+        if (!one_t.getText().toString().isEmpty())
         {
             one = Integer.parseInt(one_t.getText().toString());
         }
@@ -81,9 +91,12 @@ public class MainActivity extends AppCompatActivity {
 
         TextView step = findViewById(R.id.textView);
         TextView mxm = findViewById(R.id.textView7);
+        TextView mainresult = findViewById(R.id.titleTextView);
 
         step.setText(""+st_final);
         mxm.setText(""+ mxm_final);
+        mainresult.setText(""+ resutl);
+
     }
     private boolean isNotEmpty(EditText etText) {
         if (etText.getText().toString().trim().length() > 0) {
