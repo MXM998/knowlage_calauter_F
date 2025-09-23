@@ -44,7 +44,10 @@ public class MainActivity extends AppCompatActivity {
         pasnger = findViewById(R.id.editTextNumber5);
 
         Button ccl = findViewById(R.id.cala_bt);
+        Button sav_cl = findViewById(R.id.save_bt);
+
         ccl.setOnClickListener(v1 -> Calaut());
+        sav_cl.setOnClickListener(view -> save_data());
     }
     private  void rest_value()
     {
@@ -98,10 +101,18 @@ public class MainActivity extends AppCompatActivity {
         mainresult.setText(""+ resutl);
 
     }
+    private  void save_data()
+    {
+
+    }
+
     private boolean isNotEmpty(EditText etText) {
         if (etText.getText().toString().trim().length() > 0) {
             return true;
         }
         return false;
     }
+
 }
+
+
