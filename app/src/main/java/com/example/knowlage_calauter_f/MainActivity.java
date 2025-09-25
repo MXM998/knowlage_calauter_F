@@ -14,9 +14,11 @@ import androidx.core.view.WindowInsetsCompat;
 
 public class MainActivity extends AppCompatActivity {
 
-    int five , tow , one ,fiveh = 0;
-    EditText fiv_t  , tow_t , one_t , fiv_h_t , pasnger;
+    int five , tow , one ,fiveh ,stu_count = 0;
+    EditText fiv_t  , tow_t , one_t , fiv_h_t , pasnger ,stu_countEdit;
     double pasnger_nu;
+
+    TextView step , mxm, mainresult, stu_count_Ui;
 
 
     @Override
@@ -42,12 +44,20 @@ public class MainActivity extends AppCompatActivity {
         one_t = findViewById(R.id.editTextNumber3);
         fiv_h_t = findViewById(R.id.editTextNumber4);
         pasnger = findViewById(R.id.editTextNumber5);
+        stu_countEdit = findViewById(R.id.amountPerStudent);
 
         Button ccl = findViewById(R.id.cala_bt);
         Button sav_cl = findViewById(R.id.save_bt);
+        Button r_ui = findViewById(R.id.reset_bt);
+
+        step = findViewById(R.id.textView);
+        mxm = findViewById(R.id.textView7);
+        mainresult = findViewById(R.id.titleTextView);
+        stu_count_Ui = findViewById(R.id.studentsCount);
 
         ccl.setOnClickListener(v1 -> Calaut());
         sav_cl.setOnClickListener(view -> save_data());
+        r_ui.setOnClickListener(v -> Rest_UI());
     }
     private  void rest_value()
     {
@@ -82,6 +92,14 @@ public class MainActivity extends AppCompatActivity {
         {
             pasnger_nu = 35;
         }
+        if(isNotEmpty(stu_countEdit))
+        {
+            stu_count = Integer.parseInt(stu_countEdit.getText().toString());
+        }
+        else
+        {
+            stu_count = 15000;
+        }
 
         double reP = pasnger_nu / 100;
         double pp = (100 - pasnger_nu )/ 100;
@@ -92,14 +110,25 @@ public class MainActivity extends AppCompatActivity {
         double mxm_final = resutl * pp;
 
 
-        TextView step = findViewById(R.id.textView);
-        TextView mxm = findViewById(R.id.textView7);
-        TextView mainresult = findViewById(R.id.titleTextView);
-
         step.setText(""+st_final);
         mxm.setText(""+ mxm_final);
         mainresult.setText(""+ resutl);
+        stu_count_Ui.setText(""+ (resutl / stu_count));
 
+
+    }
+    private void Rest_UI() {
+        rest_value();
+
+        EditText[] editTexts = {fiv_t, tow_t, one_t, fiv_h_t, pasnger, stu_countEdit };
+        for (EditText editText : editTexts) {
+            editText.setText("");
+        }
+
+        step.setText("للمعهد");
+        mxm.setText("للاستاذ");
+        mainresult.setText("المجموع الكلي");
+        stu_count_Ui.setText("0");
     }
     private  void save_data()
     {

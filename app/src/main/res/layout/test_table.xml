@@ -28,13 +28,15 @@
     </TableRow>
 
     <TableRow>
+
         <Button
             android:id="@+id/showButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="عرض الرقم"
             android:layout_span="2"
-            android:gravity="center"/>
+            android:background="#CC1818"
+            android:gravity="center"
+            android:text="عرض الرقم" />
     </TableRow>
 
     <TableRow>
