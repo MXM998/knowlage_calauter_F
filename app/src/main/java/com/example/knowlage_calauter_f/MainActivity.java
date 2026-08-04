@@ -1,6 +1,5 @@
 package com.example.knowlage_calauter_f;
 
-import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.widget.Button;
 import android.widget.EditText;
@@ -14,139 +13,126 @@ import androidx.core.view.WindowInsetsCompat;
 
 public class MainActivity extends AppCompatActivity {
 
+    private EditText et10New, et25New, et50New, et100New, et200New, et500New;
+    private EditText etPercentage, etAmountPerStudent;
+    private TextView tvInstituteShare, tvTeacherShare, tvTotal, tvStudentsCount;
+    private Button btnCalculate, btnSave, btnReset;
 
-    int new_10_val, new_25_val, new_50_val, new_100_val, new_200_val, new_500_val;
-    int stu_count = 0;
-
-    EditText new_10, new_25, new_50, new_100, new_200, new_500;
-    EditText pasnger, stu_countEdit;
-
-    double pasnger_nu;
-
-    TextView step, mxm, mainresult, stu_count_Ui;
+    private static final double DEFAULT_PERCENTAGE = 35.0;
+    private static final int DEFAULT_STUDENTS = 200;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_main);
+
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
-            ins();
             return insets;
         });
+
+        bindViews();
+        setupListeners();
     }
 
-    private void ins() {
-        new_10 = findViewById(R.id.input_new_10);
-        new_25 = findViewById(R.id.input_new_25);
-        new_50 = findViewById(R.id.input_new_50);
-        new_100 = findViewById(R.id.input_new_100);
-        new_200 = findViewById(R.id.input_new_200);
-        new_500 = findViewById(R.id.input_new_500);
+    private void bindViews() {
+        et10New = findViewById(R.id.input_new_10);
+        et25New = findViewById(R.id.input_new_25);
+        et50New = findViewById(R.id.input_new_50);
+        et100New = findViewById(R.id.input_new_100);
+        et200New = findViewById(R.id.input_new_200);
+        et500New = findViewById(R.id.input_new_500);
 
-        pasnger = findViewById(R.id.editTextNumber5);
-        stu_countEdit = findViewById(R.id.amountPerStudent);
+        etPercentage = findViewById(R.id.editTextNumber5);
+        etAmountPerStudent = findViewById(R.id.amountPerStudent);
 
-        Button ccl = findViewById(R.id.cala_bt);
-        Button sav_cl = findViewById(R.id.save_bt);
-        Button r_ui = findViewById(R.id.reset_bt);
+        tvInstituteShare = findViewById(R.id.textView);
+        tvTeacherShare = findViewById(R.id.textView7);
+        tvTotal = findViewById(R.id.titleTextView);
+        tvStudentsCount = findViewById(R.id.studentsCount);
 
-        step = findViewById(R.id.textView);
-        mxm = findViewById(R.id.textView7);
-        mainresult = findViewById(R.id.titleTextView);
-        stu_count_Ui = findViewById(R.id.studentsCount);
-
-        ccl.setOnClickListener(v1 -> Calaut());
-        sav_cl.setOnClickListener(view -> save_data());
-        r_ui.setOnClickListener(v -> Rest_UI());
+        btnCalculate = findViewById(R.id.cala_bt);
+        btnSave = findViewById(R.id.save_bt);
+        btnReset = findViewById(R.id.reset_bt);
     }
 
-    private void rest_value() {
-        new_10_val = new_25_val = new_50_val = new_100_val = new_200_val = new_500_val = 0;
-        pasnger_nu = 0;
+    private void setupListeners() {
+        btnCalculate.setOnClickListener(v -> calculate());
+        btnSave.setOnClickListener(v -> saveData());
+        btnReset.setOnClickListener(v -> resetAll());
     }
 
-    @SuppressLint("SetTextI18n")
-    private void Calaut() {
-        rest_value();
+    private void calculate() {
+        int val10 = parseIntOrDefault(et10New, 0);
+        int val25 = parseIntOrDefault(et25New, 0);
+        int val50 = parseIntOrDefault(et50New, 0);
+        int val100 = parseIntOrDefault(et100New, 0);
+        int val200 = parseIntOrDefault(et200New, 0);
+        int val500 = parseIntOrDefault(et500New, 0);
 
-        if (isNotEmpty(new_10)) {
-            new_10_val = Integer.parseInt(new_10.getText().toString());
-        }
-        if (isNotEmpty(new_25)) {
-            new_25_val = Integer.parseInt(new_25.getText().toString());
-        }
-        if (isNotEmpty(new_50)) {
-            new_50_val = Integer.parseInt(new_50.getText().toString());
-        }
-        if (isNotEmpty(new_100)) {
-            new_100_val = Integer.parseInt(new_100.getText().toString());
-        }
-        if (isNotEmpty(new_200)) {
-            new_200_val = Integer.parseInt(new_200.getText().toString());
-        }
-        if (isNotEmpty(new_500)) {
-            new_500_val = Integer.parseInt(new_500.getText().toString());
-        }
+        double percentage = parseDoubleOrDefault(etPercentage, DEFAULT_PERCENTAGE);
+        int studentAmount = parseIntOrDefault(etAmountPerStudent, DEFAULT_STUDENTS);
 
-        if (isNotEmpty(pasnger)) {
-            pasnger_nu = Double.parseDouble(pasnger.getText().toString());
-        } else {
-            pasnger_nu = 35;
-        }
+        double total = val10 * 10.0 + val25 * 25.0 + val50 * 50.0
+                + val100 * 100.0 + val200 * 200.0 + val500 * 500.0;
 
-        if (isNotEmpty(stu_countEdit)) {
-            stu_count = Integer.parseInt(stu_countEdit.getText().toString());
-        } else {
-            stu_count = 200;
-        }
+        double teacherRatio = percentage / 100.0;
+        double instituteRatio = (100.0 - percentage) / 100.0;
 
-        double reP = pasnger_nu / 100;
-        double pp = (100 - pasnger_nu) / 100;
+        double teacherShareValue = total * teacherRatio;
+        double instituteShareValue = total * instituteRatio;
 
-        double totalNew = (new_10_val * 10 ) +
-                (new_25_val * 25 ) +
-                (new_50_val * 50 ) +
-                (new_100_val * 100 ) +
-                (new_200_val * 200 ) +
-                (new_500_val * 500 );
-
-        double resutl =  totalNew;
-
-        double st_final = resutl * reP;
-        double mxm_final = resutl * pp;
-
-        step.setText(String.format("%.2f",st_final));
-        mxm.setText(String.valueOf(mxm_final));
-        mainresult.setText(String.valueOf(resutl));
-        stu_count_Ui.setText(String.format("%.2f", resutl / stu_count));
+        tvTeacherShare.setText(String.format("%.2f", teacherShareValue));
+        tvInstituteShare.setText(String.format("%.2f", instituteShareValue));
+        tvTotal.setText(String.valueOf(total));
+        tvStudentsCount.setText(String.format("%.2f", total / studentAmount));
     }
 
-    private void Rest_UI() {
-        rest_value();
-
-        EditText[] editTexts = {
-                new_10, new_25, new_50, new_100, new_200, new_500,
-                pasnger, stu_countEdit
-        };
-        for (EditText editText : editTexts) {
-            if (editText != null) {
-                editText.setText("");
-            }
+    private void resetAll() {
+        EditText[] inputs = {et10New, et25New, et50New, et100New, et200New, et500New,
+                etPercentage, etAmountPerStudent};
+        for (EditText input : inputs) {
+            input.setText("");
         }
 
-        step.setText("للمعهد");
-        mxm.setText("للاستاذ");
-        mainresult.setText("المجموع الكلي");
-        stu_count_Ui.setText("0");
+        tvInstituteShare.setText("للمعهد");
+        tvTeacherShare.setText("للاستاذ");
+        tvTotal.setText("المجموع الكلي");
+        tvStudentsCount.setText("0");
     }
 
-    private void save_data() {
+    private void saveData() {
     }
 
-    private boolean isNotEmpty(EditText etText) {
-        return etText != null && etText.getText().toString().trim().length() > 0;
+    private int parseIntOrDefault(EditText editText, int defaultValue)
+    {
+        if (editText == null) return defaultValue;
+        String text = editText.getText().toString().trim();
+        if (text.isEmpty()) return defaultValue;
+        try
+        {
+            return Integer.parseInt(text);
+        }
+        catch (NumberFormatException e)
+        {
+            return defaultValue;
+        }
+    }
+
+    private double parseDoubleOrDefault(EditText editText, double defaultValue)
+    {
+        if (editText == null) return defaultValue;
+        String text = editText.getText().toString().trim();
+        if (text.isEmpty()) return defaultValue;
+        try
+        {
+            return Double.parseDouble(text);
+        }
+        catch (NumberFormatException e)
+        {
+            return defaultValue;
+        }
     }
 }
