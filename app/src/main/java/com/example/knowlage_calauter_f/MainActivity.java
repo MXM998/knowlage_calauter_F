@@ -14,11 +14,10 @@ import androidx.core.view.WindowInsetsCompat;
 
 public class MainActivity extends AppCompatActivity {
 
-    int old_five_t, old_tow_t, old_one_t, old_five_h;
+
     int new_10_val, new_25_val, new_50_val, new_100_val, new_200_val, new_500_val;
     int stu_count = 0;
 
-    EditText old_5000, old_2000, old_1000, old_500;
     EditText new_10, new_25, new_50, new_100, new_200, new_500;
     EditText pasnger, stu_countEdit;
 
@@ -40,10 +39,6 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void ins() {
-        old_5000 = findViewById(R.id.input_5000);
-        old_2000 = findViewById(R.id.input_2000);
-        old_1000 = findViewById(R.id.input_1000);
-        old_500 = findViewById(R.id.input_500);
         new_10 = findViewById(R.id.input_new_10);
         new_25 = findViewById(R.id.input_new_25);
         new_50 = findViewById(R.id.input_new_50);
@@ -69,7 +64,6 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void rest_value() {
-        old_five_t = old_tow_t = old_one_t = old_five_h = 0;
         new_10_val = new_25_val = new_50_val = new_100_val = new_200_val = new_500_val = 0;
         pasnger_nu = 0;
     }
@@ -77,19 +71,6 @@ public class MainActivity extends AppCompatActivity {
     @SuppressLint("SetTextI18n")
     private void Calaut() {
         rest_value();
-
-        if (isNotEmpty(old_5000)) {
-            old_five_t = Integer.parseInt(old_5000.getText().toString());
-        }
-        if (isNotEmpty(old_2000)) {
-            old_tow_t = Integer.parseInt(old_2000.getText().toString());
-        }
-        if (isNotEmpty(old_1000)) {
-            old_one_t = Integer.parseInt(old_1000.getText().toString());
-        }
-        if (isNotEmpty(old_500)) {
-            old_five_h = Integer.parseInt(old_500.getText().toString());
-        }
 
         if (isNotEmpty(new_10)) {
             new_10_val = Integer.parseInt(new_10.getText().toString());
@@ -119,26 +100,25 @@ public class MainActivity extends AppCompatActivity {
         if (isNotEmpty(stu_countEdit)) {
             stu_count = Integer.parseInt(stu_countEdit.getText().toString());
         } else {
-            stu_count = 15000;
+            stu_count = 200;
         }
 
         double reP = pasnger_nu / 100;
         double pp = (100 - pasnger_nu) / 100;
 
-        double totalOld = (old_five_t * 5000) + (old_tow_t * 2000) + (old_one_t * 1000) + (500 * old_five_h);
-        double totalNew = (new_10_val * 10 * 100) +
-                (new_25_val * 25 * 100) +
-                (new_50_val * 50 * 100) +
-                (new_100_val * 100 * 100) +
-                (new_200_val * 200 * 100) +
-                (new_500_val * 500 * 100);
+        double totalNew = (new_10_val * 10 ) +
+                (new_25_val * 25 ) +
+                (new_50_val * 50 ) +
+                (new_100_val * 100 ) +
+                (new_200_val * 200 ) +
+                (new_500_val * 500 );
 
-        double resutl = totalOld + totalNew;
+        double resutl =  totalNew;
 
         double st_final = resutl * reP;
         double mxm_final = resutl * pp;
 
-        step.setText(String.valueOf(st_final));
+        step.setText(String.format("%.2f",st_final));
         mxm.setText(String.valueOf(mxm_final));
         mainresult.setText(String.valueOf(resutl));
         stu_count_Ui.setText(String.format("%.2f", resutl / stu_count));
@@ -148,7 +128,6 @@ public class MainActivity extends AppCompatActivity {
         rest_value();
 
         EditText[] editTexts = {
-                old_5000, old_2000, old_1000, old_500,
                 new_10, new_25, new_50, new_100, new_200, new_500,
                 pasnger, stu_countEdit
         };
