@@ -78,8 +78,8 @@ public class MainActivity extends AppCompatActivity {
         double total = val10 * 10.0 + val25 * 25.0 + val50 * 50.0
                 + val100 * 100.0 + val200 * 200.0 + val500 * 500.0;
 
-        double teacherRatio = percentage / 100.0;
-        double instituteRatio = (100.0 - percentage) / 100.0;
+        double teacherRatio = (100.0 - percentage) /  100.0;
+        double instituteRatio = percentage / 100.0;
 
         double teacherShareValue = total * teacherRatio;
         double instituteShareValue = total * instituteRatio;
